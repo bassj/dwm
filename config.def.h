@@ -1,5 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
+#include <X11/XF86keysym.h>
+
 /* Helper macros for spawning commands */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 #define CMD(...)   { .v = (const char*[]){ __VA_ARGS__, NULL } }
@@ -28,10 +30,10 @@ static const int scalepreview            = 4;        /* Tag preview scaling */
 static int nomodbuttons                  = 1;   /* allow client mouse button bindings that have no modifier */
 #endif // NO_MOD_BUTTONS_PATCH
 #if VANITYGAPS_PATCH
-static const unsigned int gappih         = 20;  /* horiz inner gap between windows */
+static const unsigned int gappih         = 10;  /* horiz inner gap between windows */
 static const unsigned int gappiv         = 10;  /* vert inner gap between windows */
 static const unsigned int gappoh         = 10;  /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov         = 30;  /* vert outer gap between windows and screen edge */
+static const unsigned int gappov         = 10;  /* vert outer gap between windows and screen edge */
 static const int smartgaps_fact          = 1;   /* gap factor when there is only one client; 0 = no gaps, 3 = 3x outer gaps */
 #endif // VANITYGAPS_PATCH
 #if AUTOSTART_PATCH
@@ -143,9 +145,9 @@ static const unsigned int maxhtab          = 200;  /* tab menu height */
 #endif // ALT_TAB_PATCH
 
 /* Indicators: see patch/bar_indicators.h for options */
-static int tagindicatortype              = INDICATOR_TOP_LEFT_SQUARE;
+static int tagindicatortype              = INDICATOR_BOTTOM_BAR;
 static int tiledindicatortype            = INDICATOR_NONE;
-static int floatindicatortype            = INDICATOR_TOP_LEFT_SQUARE;
+static int floatindicatortype            = INDICATOR_BOTTOM_BAR;
 #if FAKEFULLSCREEN_CLIENT_PATCH && !FAKEFULLSCREEN_PATCH
 static int fakefsindicatortype           = INDICATOR_PLUS;
 static int floatfakefsindicatortype      = INDICATOR_PLUS_AND_LARGER_SQUARE;
@@ -166,41 +168,41 @@ static void (*bartabmonfns[])(Monitor *) = { NULL /* , customlayoutfn */ };
 #if BAR_PANGO_PATCH
 static const char font[]                 = "monospace 10";
 #else
-static const char *fonts[]               = { "monospace:size=10" };
+static const char *fonts[]               = { "Liberation Mono:size=14", "JetBrainsMono Nerd Font Mono:size=22:style=Bold" };
 #endif // BAR_PANGO_PATCH
-static const char dmenufont[]            = "monospace:size=10";
+static const char dmenufont[]            = "Liberation Mono:size=14";
 
 static char c000000[]                    = "#000000"; // placeholder value
 
-static char normfgcolor[]                = "#bbbbbb";
-static char normbgcolor[]                = "#222222";
-static char normbordercolor[]            = "#444444";
-static char normfloatcolor[]             = "#db8fd9";
+static char normfgcolor[]                = "#fafbf6";
+static char normbgcolor[]                = "#0f0f1b";
+static char normbordercolor[]            = "#565a75";
+static char normfloatcolor[]             = "#565a75";
 
-static char selfgcolor[]                 = "#eeeeee";
-static char selbgcolor[]                 = "#005577";
-static char selbordercolor[]             = "#005577";
-static char selfloatcolor[]              = "#005577";
+static char selfgcolor[]                 = "#fafbf6";
+static char selbgcolor[]                 = "#0f0f1b";
+static char selbordercolor[]             = "#c6b7be";
+static char selfloatcolor[]              = "#c6b7be";
 
-static char titlenormfgcolor[]           = "#bbbbbb";
-static char titlenormbgcolor[]           = "#222222";
-static char titlenormbordercolor[]       = "#444444";
-static char titlenormfloatcolor[]        = "#db8fd9";
+static char titlenormfgcolor[]           = "#fafbf6";
+static char titlenormbgcolor[]           = "#565a75";
+static char titlenormbordercolor[]       = "#565a75";
+static char titlenormfloatcolor[]        = "#565a75";
 
-static char titleselfgcolor[]            = "#eeeeee";
-static char titleselbgcolor[]            = "#005577";
-static char titleselbordercolor[]        = "#005577";
-static char titleselfloatcolor[]         = "#005577";
+static char titleselfgcolor[]            = "#fafbf6";
+static char titleselbgcolor[]            = "#565a75";
+static char titleselbordercolor[]        = "#565a75";
+static char titleselfloatcolor[]         = "#565a75";
 
-static char tagsnormfgcolor[]            = "#bbbbbb";
-static char tagsnormbgcolor[]            = "#222222";
-static char tagsnormbordercolor[]        = "#444444";
-static char tagsnormfloatcolor[]         = "#db8fd9";
+static char tagsnormfgcolor[]            = "#fafbf6";
+static char tagsnormbgcolor[]            = "#0f0f1b";
+static char tagsnormbordercolor[]        = "#fafbf6";
+static char tagsnormfloatcolor[]         = "#fafbf6";
 
-static char tagsselfgcolor[]             = "#eeeeee";
-static char tagsselbgcolor[]             = "#005577";
-static char tagsselbordercolor[]         = "#005577";
-static char tagsselfloatcolor[]          = "#005577";
+static char tagsselfgcolor[]             = "#fafbf6";
+static char tagsselbgcolor[]             = "#565a75";
+static char tagsselbordercolor[]         = "#fafbf6";
+static char tagsselfloatcolor[]          = "#fafbf6";
 
 static char hidnormfgcolor[]             = "#005577";
 static char hidselfgcolor[]              = "#227799";
@@ -459,11 +461,13 @@ static char tagicons[][NUMTAGS][MAX_TAGLEN] =
 #else
 static char *tagicons[][NUMTAGS] =
 #endif // NAMETAG_PATCH
+
 {
-	[DEFAULT_TAGS]        = { "1", "2", "3", "4", "5", "6", "7", "8", "9" },
-	[ALTERNATIVE_TAGS]    = { "A", "B", "C", "D", "E", "F", "G", "H", "I" },
-	[ALT_TAGS_DECORATION] = { "<1>", "<2>", "<3>", "<4>", "<5>", "<6>", "<7>", "<8>", "<9>" },
+	[DEFAULT_TAGS]        = { "", "", "󰈹", "󰔂", "󰓓" },
+	[ALTERNATIVE_TAGS]    = { "A", "B", "C", "D", "E" },
+	[ALT_TAGS_DECORATION] = { "<1>", "<2>", "<3>", "<4>", "<5>" },
 };
+
 
 #if BAR_TAGGRID_PATCH
 /* grid of tags */
@@ -508,8 +512,11 @@ static const Rule rules[] = {
 	RULE(.wintype = WTYPE "UTILITY", .isfloating = 1)
 	RULE(.wintype = WTYPE "TOOLBAR", .isfloating = 1)
 	RULE(.wintype = WTYPE "SPLASH", .isfloating = 1)
-	RULE(.class = "Gimp", .tags = 1 << 4)
-	RULE(.class = "Firefox", .tags = 1 << 7)
+	RULE(.class = "firefox",     .tags = 1 << 2)
+	RULE(.class = "crunchyroll", .tags = 1 << 4)
+	RULE(.class = "youtube",     .tags = 1 << 4)
+	RULE(.class = "st",          .tags = 1 << 1)
+	RULE(.title = "Steam",        .tags = 1 << 5)
 	#if RENAMED_SCRATCHPADS_PATCH
 	RULE(.instance = "spterm", .scratchkey = 's', .isfloating = 1)
 	#elif SCRATCHPADS_PATCH
@@ -783,6 +790,7 @@ static const char *xkb_layouts[]  = {
 #endif // XKB_PATCH
 
 /* key definitions */
+#define NONE 0
 #define MODKEY Mod1Mask
 #if COMBO_PATCH && SWAPTAGS_PATCH && TAGOTHERMONITOR_PATCH
 #define TAGKEYS(KEY,TAG) \
@@ -881,6 +889,11 @@ static const char *dmenucmd[] = {
 	NULL
 };
 static const char *termcmd[]  = { "st", NULL };
+static const char *playpausemediacmd[]    = { "playerctl", "play-pause", NULL };
+static const char *skipforwardmediacmd[]  = { "playerctl", "position", "10+", NULL };
+static const char *skipbackwardmediacmd[] = { "playerctl", "position", "10-", NULL };
+static const char *volupmediacmd[]        = { "playerctl", "volume",   "10+", NULL };
+static const char *voldownmediacmd[]      = { "playerctl", "volume",   "10-", NULL };
 
 #if BAR_STATUSCMD_PATCH
 #if BAR_DWMBLOCKS_PATCH
@@ -911,8 +924,13 @@ static const Key keys[] = {
 	#if KEYMODES_PATCH
 	{ MODKEY,                       XK_Escape,     setkeymode,             {.ui = COMMANDMODE} },
 	#endif // KEYMODES_PATCH
-	{ MODKEY,                       XK_p,          spawn,                  {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_Return,     spawn,                  {.v = termcmd } },
+	{ MODKEY,                       XK_p,                    spawn,               {.v = dmenucmd } },
+	{ MODKEY|ShiftMask,             XK_Return,               spawn,               {.v = termcmd } },
+	{ NONE,                         XF86XK_AudioPlay,        spawn,               {.v = playpausemediacmd } },
+	{ NONE,                         XF86XK_AudioNext,        spawn,               {.v = skipforwardmediacmd } },
+	{ NONE,                         XF86XK_AudioPrev,        spawn,               {.v = skipbackwardmediacmd } },
+	{ NONE,                         XF86XK_AudioRaiseVolume, spawn,               {.v = volupmediacmd } },
+	{ NONE,                         XF86XK_AudioLowerVolume, spawn,               {.v = voldownmediacmd } },
 	#if RIODRAW_PATCH
 	{ MODKEY|ControlMask,           XK_p,          riospawnsync,           {.v = dmenucmd } },
 	{ MODKEY|ControlMask,           XK_Return,     riospawn,               {.v = termcmd } },

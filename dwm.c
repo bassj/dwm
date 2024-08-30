@@ -70,12 +70,14 @@
 #define SPAWN_CWD_DELIM " []{}()<>\"':"
 #endif // SPAWNCMD_PATCH
 
+#define MAX_REFRESH_RATE 256
+
 /* macros */
 #define Button6                 6
 #define Button7                 7
 #define Button8                 8
 #define Button9                 9
-#define NUMTAGS                 9
+#define NUMTAGS                 5
 #define NUMVIEWHIST             NUMTAGS
 #define BARRULES                20
 #if TAB_PATCH
@@ -2816,7 +2818,7 @@ movemouse(const Arg *arg)
 			handler[ev.type](&ev);
 			break;
 		case MotionNotify:
-			if ((ev.xmotion.time - lasttime) <= (1000 / 60))
+			if ((ev.xmotion.time - lasttime) <= (1000 / MAX_REFRESH_RATE))
 				continue;
 			lasttime = ev.xmotion.time;
 
@@ -3155,7 +3157,7 @@ resizemouse(const Arg *arg)
 			handler[ev.type](&ev);
 			break;
 		case MotionNotify:
-			if ((ev.xmotion.time - lasttime) <= (1000 / 60))
+			if ((ev.xmotion.time - lasttime) <= (1000 / MAX_REFRESH_RATE))
 				continue;
 			lasttime = ev.xmotion.time;
 

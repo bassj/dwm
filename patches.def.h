@@ -907,7 +907,7 @@
  * monitor (default).
  * https://dwm.suckless.org/patches/pertag/
  */
-#define PERTAG_PATCH 0
+#define PERTAG_PATCH 1
 
 /* Option to enable gaps on a per tag basis rather than globally.
  * Depends on both pertag and vanitygaps patches being enabled.
@@ -988,7 +988,7 @@
  * Additionally dwm can quit cleanly by using kill -TERM dwmpid.
  * https://dwm.suckless.org/patches/restartsig/
  */
-#define RESTARTSIG_PATCH 0
+#define RESTARTSIG_PATCH 1
 
 /* Adds rio-like drawing to resize the selected client.
  * This depends on an external tool slop being installed.
@@ -1048,7 +1048,7 @@
  *
  * The above is not persisted across reboots, however.
  */
-#define SEAMLESS_RESTART_PATCH 0
+#define SEAMLESS_RESTART_PATCH 1
 
 /* As opposed to the original patch this only adds a rule option allowing fake fullscreen
  * to be enabled for applications when they start. This is intended to be used in combination
@@ -1173,7 +1173,7 @@
  *
  * https://github.com/bakkeby/patches/wiki/steam
  */
-#define STEAM_PATCH 0
+#define STEAM_PATCH 1
 
 /* Adds toggleable keyboard shortcut to make a client 'sticky', i.e. visible on all tags.
  * https://dwm.suckless.org/patches/sticky/
@@ -1366,7 +1366,7 @@
  * https://github.com/bakkeby/patches/blob/master/dwm/dwm-vanitygaps-6.2.diff
  * https://github.com/bakkeby/patches/blob/master/dwm/dwm-cfacts-vanitygaps-6.2.diff
  */
-#define VANITYGAPS_PATCH 0
+#define VANITYGAPS_PATCH 1
 
 /* This patch adds outer gaps for the monocle layout.
  * Most gaps patches tries to avoid gaps on the monocle layout, as it is often used as a
